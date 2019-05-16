@@ -1,38 +1,37 @@
 package com.virtusa.numbertowords.service.impl;
 
-import java.util.Scanner;
-
 import com.virtusa.numbertowords.handler.impl.NumberUnitHandler;
 import com.virtusa.numbertowords.handler.impl.SecondUnitHandler;
 import com.virtusa.numbertowords.handler.impl.UnitCountHandler;
 
 /**
- * This class takes input from console and convert the input number words representation 
+ * This class takes input from console and convert the input number words
+ * representation
+ * 
  * @author hariom
  *
  */
 public class NumberToWordConverter {
 
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Please enter the number");
-		Integer number = scanner.nextInt();
+		Integer number = 56945781;
 		if (number > 0) {
 			convertToWords(number);
 		} else {
-			System.out.println("Enter number is not valid");
+			System.err.println("Enter number is not valid");
 		}
-		scanner.close();
 	}
 
 	/**
 	 * This method use to convert integer value to words
+	 * 
 	 * @param number
-	 *          input integer value
+	 *            input integer value
 	 */
-	private static void convertToWords(Integer number) {
+	public static String convertToWords(Integer number) {
 		NumberUnitHandler unitHandler = new NumberUnitHandler(new SecondUnitHandler(new UnitCountHandler()));
 		StringBuilder builder = new StringBuilder();
+		String wordRepresntation = "";
 		unitHandler.incrementCount();
 		Integer reminder = -1;
 		while (number > 0) {
@@ -46,7 +45,12 @@ public class NumberToWordConverter {
 			}
 			builder.insert(0, unitHandler.getUnitValue(reminder));
 		}
-
-		System.out.println(builder.toString());
+		Integer andLastINdex = builder.lastIndexOf(NumberUnitHandler.AND_CONSTANT);
+		if (builder.toString().length() - andLastINdex == 4) {
+			wordRepresntation = builder.substring(0, andLastINdex);
+		}else {
+			wordRepresntation = builder.toString();
+		}
+		return wordRepresntation;
 	}
 }
